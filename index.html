@@ -3,46 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎮 Sussy Baka - Tic Tac Toe</title>
+    <meta name="description" content="بازی دوز حرفه‌ای با هوش مصنوعی، سیستم امتیازدهی و تم‌های رنگی متنوع">
+    <title>🎮 دوز حرفه‌ای - Sussy Baka</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>🎮 Sussy Baka Game</h1>
-        <h2>بازی دوز</h2>
-        
-        <div class="game-info">
-            <p id="status">نوبت بازیکن: <span id="current-player">X</span></p>
+    <!-- صفحه لودینگ -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h1 class="loading-title">🎮 Sussy Baka</h1>
+            <p class="loading-text">در حال بارگذاری...</p>
         </div>
+    </div>
 
-        <div class="game-board" id="gameBoard">
-            <div class="cell" data-index="0"></div>
-            <div class="cell" data-index="1"></div>
-            <div class="cell" data-index="2"></div>
-            <div class="cell" data-index="3"></div>
-            <div class="cell" data-index="4"></div>
-            <div class="cell" data-index="5"></div>
-            <div class="cell" data-index="6"></div>
-            <div class="cell" data-index="7"></div>
-            <div class="cell" data-index="8"></div>
-        </div>
+    <!-- ذرات پس‌زمینه -->
+    <div class="particles" id="particles"></div>
 
-        <div class="controls">
-            <button id="resetBtn" class="btn">🔄 شروع مجدد</button>
-        </div>
-
-        <div class="score">
-            <div class="score-item">
-                <span>X برد: </span>
-                <span id="scoreX">0</span>
+    <!-- منوی اصلی -->
+    <div class="screen active" id="mainMenu">
+        <div class="container">
+            <div class="game-header">
+                <h1 class="game-title">
+                    <span class="title-emoji">🎮</span>
+                    <span class="title-text">Sussy Baka</span>
+                </h1>
+                <p class="game-subtitle">بازی دوز حرفه‌ای</p>
             </div>
-            <div class="score-item">
-                <span>مساوی: </span>
-                <span id="scoreDraw">0</span>
+
+            <div class="menu-buttons">
+                <button class="menu-btn primary" id="vsAiBtn">
+                    <span class="btn-icon">🤖</span>
+                    <span class="btn-text">بازی با هوش مصنوعی</span>
+                </button>
+                <button class="menu-btn" id="vsPlayerBtn">
+                    <span class="btn-icon">👥</span>
+                    <span class="btn-text">بازی دو نفره</span>
+                </button>
+                <button class="menu-btn" id="statsBtn">
+                    <span class="btn-icon">📊</span>
+                    <span class="btn-text">آمار و تاریخچه</span>
+                </button>
+                <button class="menu-btn" id="settingsBtn">
+                    <span class="btn-icon">⚙️</span>
+                    <span class="btn-text">تنظیمات</span>
+                </button>
             </div>
-            <div class="score-item">
-                <span>O برد: </span>
-                <span id="scoreO">0</span>
+
+            <div class="player-info">
+                <div class="info-card">
+                    <div class="info-icon">⭐</div>
+                    <div class="info-content">
+                        <div class="info-label">سطح</div>
+                        <div class="info-value" id="playerLevel">1</div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">🏆</div>
+                    <div class="info-content">
+                        <div class="info-label">امتیاز</div>
+                        <div class="info-value" id="playerXP">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- صفحه انتخاب سختی -->
+    <div class="screen" id="difficultyMenu">
+        <div class="container">
+            <h2 class="screen-title">انتخاب سطح سختی</h2>
+            
+            <div class="difficulty-buttons">
+                <button class="difficulty-btn easy" data-difficulty="easy">
+                    <span class="diff-emoji">😊</span>
+                    <span class="diff-name">آسان</span>
+                    <span class="diff-desc">مناسب مبتدی‌ها</span>
+                    <span class="diff-reward">پاداش: +10 XP</span>
+                </button>
+                <button class="difficulty-btn medium" data-difficulty="medium">
+                    <span class="diff-emoji">🤔</span>
+                    <span class="diff-name">متوسط</span>
+                    <span class="diff-desc">چالش معمولی</span>
+                    <span class="diff-reward">پاداش: +25 XP</span>
+                </button>
+                <button class="difficulty-btn hard" data-difficulty="hard">
+                    <span class="diff-emoji">😎</span>
+                    <span class="diff-name">سخت</span>
+                    <span class="diff-desc">برای حرفه‌ای‌ها</span>
+                    <span class="diff-reward">پاداش: +50 XP</span>
+                </button>
+                <button class="difficulty-btn impossible" data-difficulty="impossible">
+                    <span class="diff-emoji">😈</span>
+                    <span class="diff-name">غیرممکن</span>
+                    <span class="diff-desc">شکست‌ناپذیر!</span>
+                    <span class="diff-reward">پاداش: +100 XP</span>
+                </button>
+            </div>
+
+            <button class="back-btn" id="backFromDifficulty">
+                <span>🏠 بازگشت به منو</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- صفحه بازی -->
+    <div class="screen" id="gameScreen">
+        <div class="container game-container">
+            <div class="game-top">
+                <button class="icon-btn" id="backToMenu" title="بازگشت به منو">
+                    <span>🏠</span>
+                </button>
+                <div class="game-mode-info" id="gameModeInfo">دو نفره</div>
+                <button class="icon-btn" id="soundToggle" title="صدا">
+                    <span id="soundIcon">🔊</span>
+                </button>
+            </div>
+
+            <div class="game-status" id="gameStatus">
+                <div class="status-player" id="statusText">نوبت بازیکن X</div>
+                <div class="status-timer" id="gameTimer">00:00</div>
+            </div>
+
+            <div class="xp-bar">
+                <div class="xp-info">
+                    <span>سطح <span id="currentLevel">1</span></span>
+                    <span><span id="currentXP">0</span> / <span id="requiredXP">100</span> XP</span>
+                </div>
+                <div class="xp-progress">
+                    <div class="xp-fill" id="xpFill"></div>
+                </div>
+            </div>
+
+            <div class="game-board" id="gameBoard">
+                <div class="cell" data-index="0"></div>
+                <div class="cell" data-index="1"></div>
+                <div class="cell" data-index="2"></div>
+                <div class="cell" data-index="3"></div>
+                <div class="cell" data-index="4"></div>
+                <div class="cell" data-index="5"></div>
+                <div class="cell" data-index="6"></div>
+                <div class="cell" data-index="7"></div>
+                <div class="cell" data-index="8"></div>
+            </div>
+
+            <div class="game-controls">
+                <button class="control-btn" id="hintBtn" title="راهنمایی">
+                    <span class="btn-icon">💡</span>
+                    <span class="btn-label">راهنمایی</span>
+                </button>
+                <button class="control-btn" id="undoBtn" title="برگشت">
+                    <span class="btn-icon">↩️</span>
+                    <span class="btn-label">برگشت</span>
+                </button>
+                <button class="control-btn primary" id="resetBtn" title="شروع مجدد">
+                    <span class="btn-icon">🔄</span>
+                    <span class="btn-label">شروع مجدد</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- صفحه آمار -->
+    <div class="screen" id="statsScreen">
+        <div class="container">
+            <h2 class="screen-title">📊 آمار و تاریخچه</h2>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon win">🏆</div>
+                    <div class="stat-value" id="totalWins">0</div>
+                    <div class="stat-label">برد</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon lose">😢</div>
+                    <div class="stat-value" id="totalLosses">0</div>
+                    <div class="stat-label">باخت</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon draw">🤝</div>
+                    <div class="stat-value" id="totalDraws">0</div>
+                    <div class="stat-label">مساوی</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon rate">📈</div>
+                    <div class="stat-value" id="winRate">0%</div>
+                    <div class="stat-label">نرخ برد</div>
+                </div>
+            </div>
+
+            <div class="history-section">
+                <h3 class="section-title">تاریخچه بازی‌ها</h3>
+                <div class="history-list" id="historyList">
+                    <div class="empty-state">هنوز بازی نکردی! 🎮</div>
+                </div>
+            </div>
+
+            <button class="back-btn" id="backFromStats">
+                <span>🏠 بازگشت به منو</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- صفحه تنظیمات -->
+    <div class="screen" id="settingsScreen">
+        <div class="container">
+            <h2 class="screen-title">⚙️ تنظیمات</h2>
+
+            <div class="settings-section">
+                <h3 class="section-title">🎨 تم رنگی</h3>
+                <div class="theme-buttons">
+                    <button class="theme-btn active" data-theme="blue">
+                        <span class="theme-color" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"></span>
+                        <span class="theme-name">آبی</span>
+                    </button>
+                    <button class="theme-btn" data-theme="green">
+                        <span class="theme-color" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%)"></span>
+                        <span class="theme-name">سبز</span>
+                    </button>
+                    <button class="theme-btn" data-theme="orange">
+                        <span class="theme-color" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"></span>
+                        <span class="theme-name">نارنجی</span>
+                    </button>
+                    <button class="theme-btn" data-theme="dark">
+                        <span class="theme-color" style="background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%)"></span>
+                        <span class="theme-name">تیره</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3 class="section-title">🔊 صدا و جلوه‌ها</h3>
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <span>فعال کردن صدا</span>
+                        <input type="checkbox" class="setting-toggle" id="soundEnabled" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label class="setting-label full">
+                        <span>حجم صدا</span>
+                        <input type="range" class="setting-range" id="soundVolume" min="0" max="100" value="70">
+                        <span class="range-value" id="volumeValue">70%</span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <span>انیمیشن‌ها</span>
+                        <input type="checkbox" class="setting-toggle" id="animationsEnabled" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3 class="section-title">🗑️ داده‌ها</h3>
+                <button class="danger-btn" id="resetDataBtn">
+                    <span>🗑️ پاک کردن تمام داده‌ها</span>
+                </button>
+            </div>
+
+            <button class="back-btn" id="backFromSettings">
+                <span>🏠 بازگشت به منو</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- مودال نتیجه بازی -->
+    <div class="modal" id="resultModal">
+        <div class="modal-content">
+            <div class="modal-icon" id="resultIcon">🏆</div>
+            <h2 class="modal-title" id="resultTitle">برنده شدی!</h2>
+            <p class="modal-message" id="resultMessage">+50 XP دریافت کردی</p>
+            <div class="modal-buttons">
+                <button class="modal-btn primary" id="playAgainBtn">🔄 بازی مجدد</button>
+                <button class="modal-btn" id="backToMenuFromModal">🏠 منوی اصلی</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال تأیید -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content">
+            <div class="modal-icon">⚠️</div>
+            <h2 class="modal-title" id="confirmTitle">آیا مطمئنی؟</h2>
+            <p class="modal-message" id="confirmMessage">این عمل قابل بازگشت نیست!</p>
+            <div class="modal-buttons">
+                <button class="modal-btn danger" id="confirmYes">بله</button>
+                <button class="modal-btn" id="confirmNo">خیر</button>
             </div>
         </div>
     </div>
