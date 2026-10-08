@@ -1,3 +1,79 @@
+/* ==========================================
+   🎮 Sussy Baka - بازی دوز حرفه‌ای
+   نسخه: 2.0.0
+   ========================================== */
+
+/* === متغیرهای CSS برای تم‌های رنگی === */
+:root {
+    /* تم آبی (پیش‌فرض) */
+    --primary-color: #667eea;
+    --secondary-color: #764ba2;
+    --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-hover: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    
+    /* رنگ‌های مشترک */
+    --bg-light: #ffffff;
+    --bg-dark: rgba(255, 255, 255, 0.95);
+    --text-dark: #2c3e50;
+    --text-light: #ffffff;
+    --success: #38ef7d;
+    --danger: #f5576c;
+    --warning: #ffd700;
+    --info: #4ca1af;
+    
+    /* سایه‌ها */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
+    --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.3);
+    
+    /* انتقال‌ها */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+    
+    /* فاصله‌ها */
+    --spacing-xs: 8px;
+    --spacing-sm: 12px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    
+    /* شعاع گوشه‌ها */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-full: 50px;
+}
+
+/* تم سبز */
+body[data-theme="green"] {
+    --primary-color: #11998e;
+    --secondary-color: #38ef7d;
+    --gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    --gradient-hover: linear-gradient(135deg, #38ef7d 0%, #11998e 100%);
+}
+
+/* تم نارنجی/صورتی */
+body[data-theme="orange"] {
+    --primary-color: #f093fb;
+    --secondary-color: #f5576c;
+    --gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --gradient-hover: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+}
+
+/* تم تیره */
+body[data-theme="dark"] {
+    --primary-color: #2c3e50;
+    --secondary-color: #4ca1af;
+    --gradient: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%);
+    --gradient-hover: linear-gradient(135deg, #4ca1af 0%, #2c3e50 100%);
+    --bg-dark: rgba(44, 62, 80, 0.95);
+    --text-dark: #ecf0f1;
+}
+
+/* === ریست و تنظیمات پایه === */
 * {
     margin: 0;
     padding: 0;
@@ -5,171 +81,1016 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+    background: var(--gradient);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: var(--spacing-lg);
+    overflow-x: hidden;
+    position: relative;
 }
 
-.container {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    max-width: 500px;
+/* === ذرات پس‌زمینه === */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
 }
 
-h1 {
-    color: #667eea;
-    margin-bottom: 10px;
+.particles::before,
+.particles::after {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    animation: float 20s infinite ease-in-out;
+}
+
+.particles::before {
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.particles::after {
+    bottom: 10%;
+    right: 10%;
+    animation-delay: 10s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    25% {
+        transform: translate(30px, -30px) scale(1.1);
+    }
+    50% {
+        transform: translate(-20px, 20px) scale(0.9);
+    }
+    75% {
+        transform: translate(40px, 10px) scale(1.05);
+    }
+}
+
+/* === صفحه لودینگ === */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loading-content {
+    text-align: center;
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-top-color: var(--text-light);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto var(--spacing-lg);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-title {
+    color: var(--text-light);
     font-size: 2.5em;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    font-weight: 900;
+    margin-bottom: var(--spacing-sm);
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-h2 {
-    color: #764ba2;
-    margin-bottom: 20px;
+.loading-text {
+    color: var(--text-light);
+    font-size: 1.2em;
+    font-weight: 300;
+}
+
+/* === مدیریت صفحات === */
+.screen {
+    display: none;
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 0.5s ease;
+}
+
+.screen.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* === کانتینر === */
+.container {
+    background: var(--bg-dark);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-xl);
+    backdrop-filter: blur(10px);
+}
+
+.game-container {
+    max-width: 500px;
+}
+
+/* === هدر بازی === */
+.game-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.game-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-md);
+    font-size: 2.5em;
+    font-weight: 900;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-sm);
+}
+
+.title-emoji {
+    font-size: 1.2em;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.game-subtitle {
+    font-size: 1.2em;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.screen-title {
+    text-align: center;
+    font-size: 2em;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-xl);
+}
+
+.section-title {
+    font-size: 1.3em;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-md);
+}
+
+/* === دکمه‌های منو === */
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+}
+
+.menu-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+    background: var(--bg-light);
+    border: 2px solid var(--primary-color);
+    border-radius: var(--radius-lg);
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-sm);
+}
+
+.menu-btn:hover {
+    background: var(--gradient);
+    color: var(--text-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.menu-btn.primary {
+    background: var(--gradient);
+    color: var(--text-light);
+    border: none;
+}
+
+.menu-btn.primary:hover {
+    background: var(--gradient-hover);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-icon {
     font-size: 1.5em;
 }
 
-.game-info {
-    margin-bottom: 20px;
-    font-size: 1.2em;
-    color: #333;
+/* === کارت‌های اطلاعات بازیکن === */
+.player-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
 }
 
-#current-player {
-    font-weight: bold;
-    color: #667eea;
+.info-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    box-shadow: var(--shadow-sm);
+    border: 2px solid transparent;
+    transition: all var(--transition-normal);
+}
+
+.info-card:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.info-icon {
+    font-size: 2em;
+}
+
+.info-content {
+    flex: 1;
+}
+
+.info-label {
+    font-size: 0.9em;
+    color: #7f8c8d;
+    margin-bottom: 4px;
+}
+
+.info-value {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+/* === دکمه‌های سختی === */
+.difficulty-buttons {
+    display: grid;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+}
+
+.difficulty-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-lg);
+    background: var(--bg-light);
+    border: 3px solid;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-sm);
+}
+
+.difficulty-btn.easy { border-color: #38ef7d; }
+.difficulty-btn.medium { border-color: #ffd700; }
+.difficulty-btn.hard { border-color: #f5576c; }
+.difficulty-btn.impossible { border-color: #2c3e50; }
+
+.difficulty-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: var(--shadow-lg);
+}
+
+.diff-emoji {
+    font-size: 3em;
+    margin-bottom: var(--spacing-sm);
+}
+
+.diff-name {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+}
+
+.diff-desc {
+    font-size: 0.95em;
+    color: #7f8c8d;
+    margin-bottom: var(--spacing-sm);
+}
+
+.diff-reward {
+    font-size: 0.9em;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* === صفحه بازی === */
+.game-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.icon-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    background: var(--bg-light);
+    border: 2px solid var(--primary-color);
+    font-size: 1.5em;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-sm);
+}
+
+.icon-btn:hover {
+    background: var(--gradient);
+    transform: scale(1.1);
+    box-shadow: var(--shadow-md);
+}
+
+.game-mode-info {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--text-dark);
+    background: var(--bg-light);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-sm);
+}
+
+/* === وضعیت بازی === */
+.game-status {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.status-player {
     font-size: 1.3em;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-sm);
 }
 
+.status-timer {
+    font-size: 1em;
+    color: #7f8c8d;
+    font-family: 'Courier New', monospace;
+}
+
+/* === نوار XP === */
+.xp-bar {
+    margin-bottom: var(--spacing-lg);
+}
+
+.xp-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-sm);
+}
+
+.xp-progress {
+    height: 12px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.xp-fill {
+    height: 100%;
+    background: var(--gradient);
+    border-radius: var(--radius-full);
+    transition: width 0.5s ease;
+}
+
+/* === تخته بازی === */
 .game-board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin: 30px auto;
-    max-width: 350px;
+    gap: var(--spacing-md);
+    margin: var(--spacing-xl) 0;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .cell {
     aspect-ratio: 1;
-    background: linear-gradient(145deg, #f0f0f0, #ffffff);
-    border: 3px solid #667eea;
-    border-radius: 15px;
+    background: var(--bg-light);
+    border: 3px solid var(--primary-color);
+    border-radius: var(--radius-lg);
     font-size: 3em;
-    font-weight: bold;
+    font-weight: 900;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+}
+
+.cell::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: var(--gradient);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+    z-index: 0;
+    opacity: 0.2;
+}
+
+.cell:hover:not(.taken)::before {
+    width: 100%;
+    height: 100%;
 }
 
 .cell:hover:not(.taken) {
-    background: linear-gradient(145deg, #667eea, #764ba2);
     transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-md);
+    border-color: var(--secondary-color);
 }
 
 .cell.taken {
     cursor: not-allowed;
 }
 
+.cell span {
+    position: relative;
+    z-index: 1;
+}
+
 .cell.x {
-    color: #667eea;
-    animation: popIn 0.3s ease;
+    color: var(--primary-color);
+    animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .cell.o {
-    color: #764ba2;
-    animation: popIn 0.3s ease;
+    color: var(--secondary-color);
+    animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .cell.winner {
-    background: linear-gradient(145deg, #ffd700, #ffed4e);
-    animation: winPulse 0.5s ease infinite;
+    background: var(--gradient);
+    color: var(--text-light);
+    animation: winPulse 0.6s ease infinite;
+}
+
+.cell.hint {
+    border-color: var(--warning);
+    animation: hintPulse 1s ease infinite;
 }
 
 @keyframes popIn {
     0% {
-        transform: scale(0);
+        transform: scale(0) rotate(-180deg);
+        opacity: 0;
     }
     50% {
-        transform: scale(1.2);
+        transform: scale(1.2) rotate(0deg);
     }
     100% {
-        transform: scale(1);
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
     }
 }
 
 @keyframes winPulse {
     0%, 100% {
         transform: scale(1);
+        box-shadow: 0 0 0 0 var(--warning);
     }
     50% {
         transform: scale(1.05);
+        box-shadow: 0 0 0 10px transparent;
     }
 }
 
-.controls {
-    margin: 20px 0;
+@keyframes hintPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 var(--warning);
+    }
+    50% {
+        box-shadow: 0 0 0 8px transparent;
+    }
 }
 
-.btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    padding: 15px 40px;
-    font-size: 1.1em;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-    font-weight: bold;
-}
-
-.btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-}
-
-.btn:active {
-    transform: translateY(0);
-}
-
-.score {
+/* === کنترل‌های بازی === */
+.game-controls {
     display: flex;
-    justify-content: space-around;
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 2px solid #667eea;
+    gap: var(--spacing-sm);
+    justify-content: center;
 }
 
-.score-item {
+.control-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: var(--spacing-md);
+    background: var(--bg-light);
+    border: 2px solid var(--primary-color);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-sm);
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.control-btn:hover {
+    background: var(--gradient);
+    color: var(--text-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.control-btn.primary {
+    background: var(--gradient);
+    color: var(--text-light);
+    border: none;
+}
+
+.control-btn.primary:hover {
+    background: var(--gradient-hover);
+}
+
+.control-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-label {
+    font-size: 0.85em;
+}
+
+/* === آمار === */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+}
+
+.stat-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal);
+    border: 2px solid transparent;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-color);
+}
+
+.stat-icon {
+    font-size: 2.5em;
+    margin-bottom: var(--spacing-sm);
+}
+
+.stat-icon.win { filter: hue-rotate(0deg); }
+.stat-icon.lose { filter: grayscale(50%); }
+.stat-icon.draw { filter: hue-rotate(180deg); }
+.stat-icon.rate { filter: hue-rotate(90deg); }
+
+.stat-value {
+    font-size: 2em;
+    font-weight: 900;
+    color: var(--primary-color);
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 1em;
+    color: #7f8c8d;
+}
+
+/* === تاریخچه === */
+.history-section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.history-list {
+    max-height: 300px;
+    overflow-y: auto;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+}
+
+.history-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.history-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: var(--radius-sm);
+}
+
+.history-list::-webkit-scrollbar-thumb {
+    background: var(--gradient);
+    border-radius: var(--radius-sm);
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    font-size: 0.95em;
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.history-result {
+    font-weight: 600;
+}
+
+.history-result.win { color: var(--success); }
+.history-result.lose { color: var(--danger); }
+.history-result.draw { color: var(--warning); }
+
+.history-date {
+    color: #7f8c8d;
+    font-size: 0.85em;
+}
+
+.empty-state {
+    text-align: center;
+    padding: var(--spacing-xl);
+    color: #7f8c8d;
     font-size: 1.1em;
-    color: #333;
 }
 
-.score-item span:last-child {
-    font-weight: bold;
-    color: #667eea;
-    margin-right: 5px;
+/* === تنظیمات === */
+.settings-section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.theme-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+}
+
+.theme-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    background: var(--bg-light);
+    border: 2px solid transparent;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-sm);
+}
+
+.theme-btn:hover,
+.theme-btn.active {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.theme-color {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: var(--shadow-sm);
+}
+
+.theme-name {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.setting-item {
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+}
+
+.setting-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.setting-label.full {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-sm);
+}
+
+.setting-toggle {
+    position: relative;
+    width: 50px;
+    height: 26px;
+    appearance: none;
+    background: #ddd;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.setting-toggle:checked {
+    background: var(--gradient);
+}
+
+.setting-toggle::before {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    background: white;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-sm);
+}
+
+.setting-toggle:checked::before {
+    left: 26px;
+}
+
+.setting-range {
+    width: 100%;
+    height: 8px;
+    border-radius: var(--radius-full);
+    background: #ddd;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.setting-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--gradient);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+}
+
+.setting-range::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--gradient);
+    cursor: pointer;
+    border: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.range-value {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* === دکمه‌ها === */
+.back-btn,
+.danger-btn {
+    width: 100%;
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-sm);
+}
+
+.back-btn {
+    background: var(--bg-light);
+    border: 2px solid var(--primary-color);
+    color: var(--text-dark);
+}
+
+.back-btn:hover {
+    background: var(--gradient);
+    color: var(--text-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.danger-btn {
+    background: var(--danger);
+    border: none;
+    color: var(--text-light);
+}
+
+.danger-btn:hover {
+    background: #e14855;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* === مودال === */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.modal.active {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background: var(--bg-dark);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: var(--shadow-xl);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-icon {
+    font-size: 4em;
+    margin-bottom: var(--spacing-md);
+}
+
+.modal-title {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-sm);
+}
+
+.modal-message {
+    font-size: 1.1em;
+    color: #7f8c8d;
+    margin-bottom: var(--spacing-xl);
+}
+
+.modal-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.modal-btn {
+    flex: 1;
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-sm);
+    background: var(--bg-light);
+    border: 2px solid var(--primary-color);
+    color: var(--text-dark);
+}
+
+.modal-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.modal-btn.primary {
+    background: var(--gradient);
+    color: var(--text-light);
+    border: none;
+}
+
+.modal-btn.primary:hover {
+    background: var(--gradient-hover);
+}
+
+.modal-btn.danger {
+    background: var(--danger);
+    color: var(--text-light);
+    border: none;
+}
+
+.modal-btn.danger:hover {
+    background: #e14855;
+}
+
+/* === ریسپانسیو === */
+@media (max-width: 768px) {
+    body {
+        padding: var(--spacing-md);
+    }
+    
+    .container {
+        padding: var(--spacing-lg);
+    }
+    
+    .game-title {
+        font-size: 2em;
+    }
+    
+    .cell {
+        font-size: 2.5em;
+    }
+    
+    .game-board {
+        gap: var(--spacing-sm);
+        max-width: 350px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .theme-buttons {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 480px) {
-    .container {
-        padding: 20px;
-    }
-    
-    h1 {
-        font-size: 2em;
+    .game-title {
+        font-size: 1.5em;
     }
     
     .cell {
@@ -177,6 +1098,26 @@ h2 {
     }
     
     .game-board {
-        max-width: 280px;
+        max-width: 300px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        padding: var(--spacing-lg);
+    }
+    
+    .modal-buttons {
+        flex-direction: column;
+    }
+}
+
+/* === حالت چاپ === */
+@media print {
+    .loading-screen,
+    .particles,
+    .game-controls,
+    .back-btn,
+    .modal {
+        display: none !important;
     }
 }
