@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Sussy Baka - Tic Tac Toe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Sussy Baka Game</h1>
+        <h2>بازی دوز</h2>
+        
+        <div class="game-info">
+            <p id="status">نوبت بازیکن: <span id="current-player">X</span></p>
+        </div>
+
+        <div class="game-board" id="gameBoard">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+
+        <div class="controls">
+            <button id="resetBtn" class="btn">🔄 شروع مجدد</button>
+        </div>
+
+        <div class="score">
+            <div class="score-item">
+                <span>X برد: </span>
+                <span id="scoreX">0</span>
+            </div>
+            <div class="score-item">
+                <span>مساوی: </span>
+                <span id="scoreDraw">0</span>
+            </div>
+            <div class="score-item">
+                <span>O برد: </span>
+                <span id="scoreO">0</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
