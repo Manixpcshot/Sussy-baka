@@ -1,17 +1,12 @@
 /* ==========================================
-   🎮 Sussy Baka - بازی دوز حرفه‌ای
-   نسخه: 2.0.0
+   🎮 Sussy Baka v4.0 ULTRA - بازی دوز حرفه‌ای
    ========================================== */
 
-/* === متغیرهای CSS برای تم‌های رنگی === */
 :root {
-    /* تم آبی (پیش‌فرض) */
     --primary-color: #667eea;
     --secondary-color: #764ba2;
     --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --gradient-hover: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-    
-    /* رنگ‌های مشترک */
     --bg-light: #ffffff;
     --bg-dark: rgba(255, 255, 255, 0.95);
     --text-dark: #2c3e50;
@@ -20,26 +15,18 @@
     --danger: #f5576c;
     --warning: #ffd700;
     --info: #4ca1af;
-    
-    /* سایه‌ها */
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
     --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
     --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
     --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.3);
-    
-    /* انتقال‌ها */
     --transition-fast: 0.2s ease;
     --transition-normal: 0.3s ease;
     --transition-slow: 0.5s ease;
-    
-    /* فاصله‌ها */
     --spacing-xs: 8px;
     --spacing-sm: 12px;
     --spacing-md: 16px;
     --spacing-lg: 24px;
     --spacing-xl: 32px;
-    
-    /* شعاع گوشه‌ها */
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
@@ -47,7 +34,6 @@
     --radius-full: 50px;
 }
 
-/* تم سبز */
 body[data-theme="green"] {
     --primary-color: #11998e;
     --secondary-color: #38ef7d;
@@ -55,7 +41,6 @@ body[data-theme="green"] {
     --gradient-hover: linear-gradient(135deg, #38ef7d 0%, #11998e 100%);
 }
 
-/* تم نارنجی/صورتی */
 body[data-theme="orange"] {
     --primary-color: #f093fb;
     --secondary-color: #f5576c;
@@ -63,7 +48,6 @@ body[data-theme="orange"] {
     --gradient-hover: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
 }
 
-/* تم تیره */
 body[data-theme="dark"] {
     --primary-color: #2c3e50;
     --secondary-color: #4ca1af;
@@ -73,7 +57,6 @@ body[data-theme="dark"] {
     --text-dark: #ecf0f1;
 }
 
-/* === ریست و تنظیمات پایه === */
 * {
     margin: 0;
     padding: 0;
@@ -92,7 +75,6 @@ body {
     position: relative;
 }
 
-/* === ذرات پس‌زمینه === */
 .particles {
     position: fixed;
     top: 0;
@@ -127,21 +109,12 @@ body {
 }
 
 @keyframes float {
-    0%, 100% {
-        transform: translate(0, 0) scale(1);
-    }
-    25% {
-        transform: translate(30px, -30px) scale(1.1);
-    }
-    50% {
-        transform: translate(-20px, 20px) scale(0.9);
-    }
-    75% {
-        transform: translate(40px, 10px) scale(1.05);
-    }
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(30px, -30px) scale(1.1); }
+    50% { transform: translate(-20px, 20px) scale(0.9); }
+    75% { transform: translate(40px, 10px) scale(1.05); }
 }
 
-/* === صفحه لودینگ === */
 .loading-screen {
     position: fixed;
     top: 0;
@@ -193,7 +166,6 @@ body {
     font-weight: 300;
 }
 
-/* === مدیریت صفحات === */
 .screen {
     display: none;
     width: 100%;
@@ -218,7 +190,6 @@ body {
     }
 }
 
-/* === کانتینر === */
 .container {
     background: var(--bg-dark);
     border-radius: var(--radius-xl);
@@ -231,7 +202,6 @@ body {
     max-width: 500px;
 }
 
-/* === هدر بازی === */
 .game-header {
     text-align: center;
     margin-bottom: var(--spacing-xl);
@@ -279,7 +249,6 @@ body {
     margin-bottom: var(--spacing-md);
 }
 
-/* === دکمه‌های منو === */
 .menu-buttons {
     display: flex;
     flex-direction: column;
@@ -326,7 +295,6 @@ body {
     font-size: 1.5em;
 }
 
-/* === کارت‌های اطلاعات بازیکن === */
 .player-info {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -371,7 +339,6 @@ body {
     color: var(--primary-color);
 }
 
-/* === دکمه‌های سختی === */
 .difficulty-buttons {
     display: grid;
     gap: var(--spacing-md);
@@ -425,7 +392,6 @@ body {
     font-weight: 600;
 }
 
-/* === صفحه بازی === */
 .game-top {
     display: flex;
     justify-content: space-between;
@@ -461,7 +427,6 @@ body {
     box-shadow: var(--shadow-sm);
 }
 
-/* === وضعیت بازی === */
 .game-status {
     text-align: center;
     margin-bottom: var(--spacing-lg);
@@ -480,7 +445,6 @@ body {
     font-family: 'Courier New', monospace;
 }
 
-/* === نوار XP === */
 .xp-bar {
     margin-bottom: var(--spacing-lg);
 }
@@ -507,7 +471,6 @@ body {
     transition: width 0.5s ease;
 }
 
-/* === تخته بازی === */
 .game-board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -625,7 +588,6 @@ body {
     }
 }
 
-/* === کنترل‌های بازی === */
 .game-controls {
     display: flex;
     gap: var(--spacing-sm);
@@ -666,17 +628,10 @@ body {
     background: var(--gradient-hover);
 }
 
-.control-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-}
-
 .btn-label {
     font-size: 0.85em;
 }
 
-/* === آمار === */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -705,11 +660,6 @@ body {
     margin-bottom: var(--spacing-sm);
 }
 
-.stat-icon.win { filter: hue-rotate(0deg); }
-.stat-icon.lose { filter: grayscale(50%); }
-.stat-icon.draw { filter: hue-rotate(180deg); }
-.stat-icon.rate { filter: hue-rotate(90deg); }
-
 .stat-value {
     font-size: 2em;
     font-weight: 900;
@@ -722,7 +672,6 @@ body {
     color: #7f8c8d;
 }
 
-/* === تاریخچه === */
 .history-section {
     margin-bottom: var(--spacing-xl);
 }
@@ -782,7 +731,6 @@ body {
     font-size: 1.1em;
 }
 
-/* === تنظیمات === */
 .settings-section {
     margin-bottom: var(--spacing-xl);
 }
@@ -914,7 +862,6 @@ body {
     color: var(--primary-color);
 }
 
-/* === دکمه‌ها === */
 .back-btn,
 .danger-btn {
     width: 100%;
@@ -952,7 +899,6 @@ body {
     box-shadow: var(--shadow-md);
 }
 
-/* === مودال === */
 .modal {
     position: fixed;
     top: 0;
@@ -1056,7 +1002,48 @@ body {
     background: #e14855;
 }
 
-/* === ریسپانسیو === */
+/* Achievement Notification */
+.achievement-notification {
+    position: fixed;
+    top: -100px;
+    right: 20px;
+    background: var(--bg-dark);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-xl);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    z-index: 10000;
+    transition: top 0.3s ease;
+    border: 2px solid var(--primary-color);
+}
+
+.achievement-notification.show {
+    top: 20px;
+}
+
+.ach-icon {
+    font-size: 3em;
+}
+
+.ach-text {
+    text-align: right;
+}
+
+.ach-title {
+    font-size: 0.9em;
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.ach-name {
+    font-size: 1.1em;
+    color: var(--text-dark);
+    font-weight: 700;
+}
+
 @media (max-width: 768px) {
     body {
         padding: var(--spacing-md);
@@ -1109,15 +1096,9 @@ body {
     .modal-buttons {
         flex-direction: column;
     }
-}
-
-/* === حالت چاپ === */
-@media print {
-    .loading-screen,
-    .particles,
-    .game-controls,
-    .back-btn,
-    .modal {
-        display: none !important;
+    
+    .achievement-notification {
+        right: 10px;
+        left: 10px;
     }
 }
